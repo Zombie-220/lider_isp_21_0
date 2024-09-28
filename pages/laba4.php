@@ -22,7 +22,7 @@
         <div class="main__task">
             <p class="main__task__header">Задача 1</p>
             <p class="main__task__text">Даны два целых числа: A, B. Проверить истинность высказывания: «Хотя бы одно из чисел A и B нечетное».</p>
-            <form action="" method="post">
+            <form method="post">
                 <input type="text" name="input_A1" placeholder="A">
                 <input type="text" name="input_B1" placeholder="B">
                 <button type="submit" name="firstButton">Выполнить</button>
@@ -47,7 +47,7 @@
         <div class="main__task">
             <p class="main__task__header">Задача 2</p>
             <p class="main__task__text">Даны две переменные вещественного типа: A, B. Перераспределить значения данных переменных так, чтобы в A оказалось меньшее из значений, а в B — большее. Вывести новые значения переменных A и B.</p>
-            <form action="" method="post">
+            <form method="post">
                 <input type="text" name="input_A2" placeholder="A">
                 <input type="text" name="input_B2" placeholder="B">
                 <button type="submit" name="secondButton">Выполнить</button>
@@ -70,7 +70,7 @@
         <div class="main__task">
             <p class="main__task__header">Задача 3</p>
             <img class="main__task__img" src="../images/laba4/task1.png" alt="task 3 laba 4">
-            <form action="" method="post">
+            <form method="post">
                 <input type="text" name="input_A3" placeholder="X">
                 <button type="submit" name="button3">Выполнить</button>
             </form>
@@ -97,7 +97,7 @@
         <div class="main__task">
             <p class="main__task__header">Задача 4</p>
             <img class="main__task__img" src="../images/laba4/task2.png" alt="task 4 laba 4">
-            <form action="" method="post">
+            <form method="post">
                 <input type="text" name="input_A4" placeholder="X">
                 <button type="submit" name="button4">Выполнить</button>
             </form>

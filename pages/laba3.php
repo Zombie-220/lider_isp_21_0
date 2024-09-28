@@ -22,7 +22,7 @@
         <div class="main__task">
             <p class="main__task__header">Задача 1</p>
             <p class="main__task__text">Даны два числа a и b. Найти их среднее арифметическое: (a + b)/2.</p>
-            <form action="" method="post">
+            <form method="post">
                 <input type="text" name="input_A" placeholder="a">
                 <input type="text" name="input_B" placeholder="b">
                 <button type="submit" name="firstButton">Выполнить</button>
@@ -45,7 +45,7 @@
         <div class="main__task">
             <p class="main__task__header">Задача 2</p>
             <p class="main__task__text">Дано двузначное число. Вывести число, полученное при перестановке цифр исходного числа.</p>
-            <form action="" method="post">
+            <form method="post">
                 <input type="text" name="input_Number" placeholder="число">
                 <button type="submit" name="secondButton">Выполнить</button>
             </form>
