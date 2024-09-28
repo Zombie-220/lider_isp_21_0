@@ -20,7 +20,8 @@
     <div class="main">
         <h1>Лабораторные работы</h1>
         <p>Исполнитель: Лидер Денис ИСП-21</p>
-        <a href="./pages/thirdLaba.php" class="main__url">Лабораторная работа №3</a>
+        <a href="./pages/laba3.php" class="main__url">Лабораторная работа №3</a>
+        <a href="./pages/laba4.php" class="main__url">Лабораторная работа №4</a>
     </div>
 
     <footer>
