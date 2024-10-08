@@ -10,7 +10,7 @@
     <meta name="author" content="Lider Denis">
     <link rel="stylesheet" href="../styles/all.css">
     <link rel="stylesheet" href="../styles/laba.css">
-    <title>Третья лаба</title>
+    <title>Четвёртая лаба</title>
 </head>
 <body>
     <header>

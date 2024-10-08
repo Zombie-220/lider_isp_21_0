@@ -22,6 +22,7 @@
         <p>Исполнитель: Лидер Денис ИСП-21</p>
         <a href="./pages/laba3.php" class="main__url">Лабораторная работа №3</a>
         <a href="./pages/laba4.php" class="main__url">Лабораторная работа №4</a>
+        <a href="./pages/laba5.php" class="main__url">Лабораторная работа №5</a>
     </div>
 
     <footer>
