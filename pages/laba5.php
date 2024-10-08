@@ -50,7 +50,7 @@
 
         <div class="main__task">
             <p class="main__task__header">Задача 2</p>
-            <p class="main__task__text">Даны два целых числа A и B (A < B). Найти сумму квадратов всех целых чисел от A до B включительно.</p>
+            <p class="main__task__text">Даны два целых числа A и B (A &lt; B). Найти сумму квадратов всех целых чисел от A до B включительно.</p>
             <form method="post">
                 <input type="text" name="input_A2" placeholder="A">
                 <input type="text" name="input_B2" placeholder="B">
@@ -62,14 +62,14 @@
                     $A = (int)$_POST['input_A2'];
                     $B = (int)$_POST['input_B2'];
                     if ($A > $B) {
-                        echo "<p class='solution error_message'>Не вополняется условие: $A > $B</p>";
+                        echo "<p class='solution error_message'>Не вополняется условие: $A &lt; $B</p>";
                     } else {
                         $summ = 0;
                         for ($i=$A; $i<$B+1; $i++) {
                             $quad = pow($i, 2);
                             $summ += $quad;
                         }
-                        echo "<p class='solution'>Реузльтат: $summ</p>";
+                        echo "<p class='solution'>A = $A<BR>B = $B<BR>Реузльтат: $summ</p>";
                     }
                 }
             ?>
