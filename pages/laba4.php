@@ -1,3 +1,8 @@
+<?php
+    include "../template/header.php";
+    include "../template/footer.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,10 +18,7 @@
     <title>Четвёртая лаба</title>
 </head>
 <body>
-    <header>
-        <p class="logo">Оптимизация web-приложений. Лаба №4</p>
-        <a href="../index.php">Назад</a>
-    </header>
+    <?php render_header() ?>
 
     <div class="main">
         <div class="main__task">
@@ -126,8 +128,6 @@
             ?>
         </div>
     </div>
-    <footer>
-        <p class="footer__p">Футер</p>
-    </footer>
+    <?php render_footer("&#169;", "Денис", 2024); ?>
 </body>
 </html>
