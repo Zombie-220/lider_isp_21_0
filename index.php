@@ -28,10 +28,9 @@
         <a href="./pages/laba5.php" class="main__url">Лабораторная работа №5</a>
         <a href="./pages/laba6.php" class="main__url">Лабораторная работа №6</a>
         <a href="./pages/laba7.php" class="main__url">Лабораторная работа №7</a>
-        <!-- <a href="./kont.php" class="main__url">Шифр</a> -->
     </div>
 
-    <?php render_footer("&#169;", "Денис", 2024); ?>
+    <?php render_footer(); ?>
 
 </body>
 </html>

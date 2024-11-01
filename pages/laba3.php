@@ -1,6 +1,10 @@
 <?php
     include "../template/header.php";
     include "../template/footer.php";
+    include "../template/task.php";
+    
+    include "../logic/laba3/task_1.php";
+    include "../logic/laba3/task_2.php";
 ?>
 
 <!DOCTYPE html>
@@ -18,53 +22,24 @@
     <title>Третья лаба</title>
 </head>
 <body>
-    <?php render_header() ?>
+    <?php render_header(3); ?>
 
     <div class="main">
-        <div class="main__task">
-            <p class="main__task__header">Задача 1</p>
-            <p class="main__task__text">Даны два числа a и b. Найти их среднее арифметическое: (a + b)/2.</p>
-            <form method="post">
-                <input type="text" name="input_A" placeholder="a">
-                <input type="text" name="input_B" placeholder="b">
-                <button type="submit" name="firstButton">Выполнить</button>
-            </form>
+        <?php
+            render_task($task_1,
+                2, 1, "Даны два числа a и b. Найти их среднее арифметическое: (a + b)/2.", "firstButton",
+                ["text", "text"], ["input_A", "input_B"], ["a", "b"]
+            );
+        ?>
 
-            <?php
-                if (isset($_POST['firstButton'])) {
-                    $a = $_POST['input_A'];
-                    $b = $_POST['input_B'];
-                    if ((is_numeric($a) && is_numeric($b))) {
-                        $average = ($a + $b) / 2;
-                        echo "<p class='solution'> Среднее арифметическое = $average</p>";
-                    } else {
-                        echo "<p class='solution'>Данные введены не корректно</p>";           
-                    }
-                }
-            ?>
-        </div>
-
-        <div class="main__task">
-            <p class="main__task__header">Задача 2</p>
-            <p class="main__task__text">Дано двузначное число. Вывести число, полученное при перестановке цифр исходного числа.</p>
-            <form method="post">
-                <input type="text" name="input_Number" placeholder="число">
-                <button type="submit" name="secondButton">Выполнить</button>
-            </form>
-
-            <?php
-                if (isset($_POST['secondButton'])) {
-                    $number = $_POST['input_Number'];
-                    if ($number >= 10 && $number <= 99) {
-                        $firstDigit = intdiv($number, 10);
-                        $secondDigit = $number % 10;
-                        $newNumber = $secondDigit * 10 + $firstDigit;
-                        echo "<p class='solution'>Результат: $newNumber</p>";
-                    } else { echo "<p class='solution'>Введенное число не является двузначным.</p>"; }
-                }
-            ?>
+        <?php
+            render_task($task_2,
+                1, 2, "Дано двузначное число. Вывести число, полученное при перестановке цифр исходного числа.", "secondButton",
+                ["text"], ["input_Number"], ["число"]
+            );
+        ?>
         </div>
     </div>
-    <?php render_footer("&#169;", "Денис", 2024); ?>
+    <?php render_footer(); ?>
 </body>
 </html>
