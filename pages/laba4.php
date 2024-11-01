@@ -29,24 +29,18 @@
     <div class="main">
         <?php
             render_task($task_1,
-                2, 1, "Даны два целых числа: A, B. Проверить истинность высказывания: «Хотя бы одно из чисел A и B нечетное».", "firstButton",
-                ["text", "text"], ["input_A1", "input_B1"], ["A", "B"]
+                1, "Даны два целых числа: A, B. Проверить истинность высказывания: «Хотя бы одно из чисел A и B нечетное».", "firstButton",
+                ["input_A1", "input_B1"], ["A", "B"]
             );
 
             render_task($task_2,
-                2, 2, "Даны две переменные вещественного типа: A, B. Перераспределить значения данных переменных так, чтобы в A оказалось меньшее из значений, а в B — большее. Вывести новые значения переменных A и B.", "secondButton",
-                ["text", "text"], ["input_A2", "input_B2"], ["A", "B"]
+                2, "Даны две переменные вещественного типа: A, B. Перераспределить значения данных переменных так, чтобы в A оказалось меньшее из значений, а в B — большее. Вывести новые значения переменных A и B.", "secondButton",
+                ["input_A2", "input_B2"], ["A", "B"]
             );
 
-            render_task($task_3,
-                1, 3, "../images/laba4/task1.png", "button3",
-                ["text"], ["input_A3"], ["X"]
-            );
+            render_task($task_3, 3, "../images/laba4/task1.png", "button3", ["input_A3"], ["X"]);
 
-            render_task($task_4,
-                1, 4, "../images/laba4/task2.png", "button4",
-                ["text"], ["input_A4"], ["X"]
-            );
+            render_task($task_4, 4, "../images/laba4/task2.png", "button4", ["input_A4"], ["X"]);
         ?>
     </div>
     <?php render_footer(); ?>
