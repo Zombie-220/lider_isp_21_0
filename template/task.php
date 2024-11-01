@@ -1,5 +1,5 @@
 <?php
-    function render_task($taskName, $numberOfInputs, $taskNumber, $taskWording, $buttonName, $inputTypes, $inputNames, $placeholderArrays) {
+    function render_task($taskName, $taskNumber, $taskWording, $buttonName, $inputNames, $placeholderArrays) {
         echo "
             <div class='main__task'>
                 <p class='main__task__header'>Задача $taskNumber</p>
@@ -16,7 +16,7 @@
             ";
         }
         echo "<form method='post'>";
-        for ($i = 0; $i < $numberOfInputs; $i++) { echo"<input type=$inputTypes[$i] name=$inputNames[$i] placeholder=$placeholderArrays[$i]>"; }
+        for ($i = 0; $i < count($inputNames); $i++) { echo"<input type=text name=$inputNames[$i] placeholder=$placeholderArrays[$i]>"; }
         echo "
                 <button type='submit' name=$buttonName>Выполнить</button>
             </form>
