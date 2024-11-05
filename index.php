@@ -22,12 +22,14 @@
 
     <div class="main">
         <h1>Лабораторные работы</h1>
-        <p>Исполнитель: Лидер Денис ИСП-21</p>
+        <p class="main__author">Исполнитель: Лидер Денис ИСП-21</p>
         <a href="./pages/laba3.php" class="main__url">Лабораторная работа №3</a>
         <a href="./pages/laba4.php" class="main__url">Лабораторная работа №4</a>
         <a href="./pages/laba5.php" class="main__url">Лабораторная работа №5</a>
         <a href="./pages/laba6.php" class="main__url">Лабораторная работа №6</a>
+        <a href="./pages/laba6-protection.php" class="main__url">Лабораторная работа №6 - защита</a>
         <a href="./pages/laba7.php" class="main__url">Лабораторная работа №7</a>
+        <a href="./pages/laba9.php" class="main__url">Лабораторная работа №9</a>
     </div>
 
     <?php render_footer(); ?>
