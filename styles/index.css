@@ -82,14 +82,14 @@
 .main__card__header__buttonExit__img { width: 20px; }
 .main__card__header__wrapper__rightCounter__img { width: 20px; }
 
-.main__card__buttons {
+.main__card__buttons__form {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
 
-.main__card__buttons__button {
+.main__card__buttons__form__button {
     border: none;
     background-color: #fff;
     color: rgb(81,117,238);
@@ -100,6 +100,15 @@
     margin: 7px 0px 7px 0px;
     border-radius: 15px;
     font-weight: 600;
+    transition: 300ms;
+}
+.main__card__buttons__form__button:hover {
+    background: linear-gradient(rgb(244,222,2), rgb(177,186,8));
+    color: #fff;
+}
+
+.main__card__buttons__buttonWrappers {
+    display: flex;
 }
 
 @media(max-width: 1024px) {
