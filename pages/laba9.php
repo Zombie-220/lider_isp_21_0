@@ -3,23 +3,53 @@
 
     if (!$conn) {
         die("Ошибка подключения: " . mysqli_connect_error());
-    } else {
-        $randNumber = rand(1, 1);
-        $result = mysqli_query($conn, "SELECT * FROM questions WHERE id = $randNumber");
-        
-        if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
+    }
+    
+    $randNumber = rand(1, 10);
 
-        while ($row = mysqli_fetch_assoc($result)) {
-            $answers = array($row["question_1"], $row["question_2"], $row["question_3"], $row["question_4"]);
-            $question = $row["title"];
-            $rightAnswer = $row["answer"];
-        }
+    function getQuestion() {
+        global $randNumber;
+        global $conn;
+
+        $result = mysqli_query($conn, "SELECT title FROM questions WHERE id = $randNumber");
+        if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
+        $row = mysqli_fetch_assoc($result);
+        return $row['title'];
+    }
+
+    function getAnswer($n) {
+        global $randNumber;
+        global $conn;
+        
+        $var = "question_$n";
+        $result = mysqli_query($conn, "SELECT $var FROM questions WHERE id = $randNumber");
+        if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
+        $row = mysqli_fetch_assoc($result);
+        return $row["$var"];
+    }
+
+    function getRightScore() {
+        global $randNumber;
+        global $conn;
+        
+        $result = mysqli_query($conn, "SELECT score FROM users WHERE userName='user'");
+        if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
+        $row = mysqli_fetch_assoc($result);
+        return $row['score'];
+    }
+
+    function getRightAnswer() {
+        global $randNumber;
+        global $conn;
+        
+        $result = mysqli_query($conn, "SELECT answer FROM questions WHERE id = $randNumber");
+        if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
+        $row = mysqli_fetch_assoc($result);
+        return $row['answer'];
     }
 
     $count = 1;
-    $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT score FROM users WHERE userName='user'"));
-    $rightCount = $row['score'];
-    if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
+    echo getRightAnswer();
 ?>
 
 <!DOCTYPE html>
@@ -42,21 +72,6 @@
     <div class="main">
 
         <div class="circle"></div>
-        
-        <!-- <form method='post'>
-            <label>Введите имя пользователя</label>
-            <input name="userNameInput">
-            <button type='submit' name='addUser'>далее</button>
-        </form>
-        -->
-        <?php
-            // if(isset($_POST['addUser'])) {
-            //     $userName = $_POST['userNameInput'];
-            //     $query = "INSERT INTO users(userName, score) VALUES('$userName', 0);";
-            //     $result = mysqli_query($conn, $query);
-            //     if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
-            // }
-        ?>
 
         <div class="main__card">
             <div class="main__card__header">
@@ -66,30 +81,30 @@
                 </div>
                 <div class="main__card__header__wrapper__rightCounter">
                     <img class="main__card__header__wrapper__rightCounter__img" src="../images/icons/heart.png" alt="?">
-                    <p class="main__card__header__wrapper__rightCounter__text"><?php echo $rightCount ?></p>
+                    <p class="main__card__header__wrapper__rightCounter__text"><?php echo getRightScore(); ?></p>
                 </div>
             </div>
             <div class="main__card__body">
                 <img src="https://img.freepik.com/free-photo/abstract-autumn-beauty-multi-colored-leaf-vein-pattern-generated-by-ai_188544-9871.jpg" alt="questionImage">
                 <p class="main__card__body__counter">question <?php echo $count; ?> of 10</p>
-                <p class="main__card__body__question"><?php echo $question ?></p>
+                <p class="main__card__body__question"><?php echo getQuestion(); ?></p>
             </div>
             <div class="main__card__buttons" method="post">
                 <form class="main__card__buttons__form" method="post">
                     <div class="main__card__buttons__buttonWrappers">
-                        <label for=""><?php echo $answers[0] ?> </label>
+                        <label for=""><?php echo getAnswer(1) ?> </label>
                         <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="1">
                     </div>
                     <div class="main__card__buttons__buttonWrappers">
-                        <label for=""><?php echo $answers[1] ?> </label>
+                        <label for=""><?php echo getAnswer(2) ?> </label>
                         <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="2">
                     </div>
                     <div class="main__card__buttons__buttonWrappers">
-                        <label for=""><?php echo $answers[2] ?> </label>
+                        <label for=""><?php echo getAnswer(3) ?> </label>
                         <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="3">
                     </div>
                     <div class="main__card__buttons__buttonWrappers">
-                        <label for=""><?php echo $answers[3] ?> </label>
+                        <label for=""><?php echo getAnswer(4) ?> </label>
                         <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="4">
                     </div>
                     <button type="submit" name="answerButton" class="main__card__buttons__button">ОТВЕТИТЬ</button>
@@ -98,8 +113,8 @@
                 <?php
                     if(isset($_POST['answerButton'])) {
                         $userAnswer = (int)$_POST["answerButtonCheck"];
-                        if ($userAnswer == $rightAnswer) {
-                            $rightCount += 1;
+                        if ($userAnswer == getRightAnswer()) {
+                            $rightCount = getRightScore() + 1;
                             $result = mysqli_query($conn, "UPDATE users SET score=$rightCount WHERE userName='user'");
                             if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
                         }
