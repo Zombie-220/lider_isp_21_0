@@ -1,17 +1,18 @@
 <?php
-    $conn = mysqli_connect("localhost", "root", "", "quiz");
+    $conn = new mysqli("localhost", "root", "", "quiz");
 
-    if (!$conn) {
+    if ($conn->connect_error) {
         die("Ошибка подключения: " . mysqli_connect_error());
     }
     
     $randNumber = rand(1, 10);
+    $rigthAnswer = getRightAnswer();
 
     function getQuestion() {
         global $randNumber;
         global $conn;
 
-        $result = mysqli_query($conn, "SELECT title FROM questions WHERE id = $randNumber");
+        $result = $conn->query("SELECT title FROM questions WHERE id = $randNumber;");
         if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
         $row = mysqli_fetch_assoc($result);
         return $row['title'];
@@ -20,9 +21,9 @@
     function getAnswer($n) {
         global $randNumber;
         global $conn;
-        
+
         $var = "question_$n";
-        $result = mysqli_query($conn, "SELECT $var FROM questions WHERE id = $randNumber");
+        $result = $conn->query("SELECT $var FROM questions WHERE id = $randNumber;");
         if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
         $row = mysqli_fetch_assoc($result);
         return $row["$var"];
@@ -31,8 +32,8 @@
     function getRightScore() {
         global $randNumber;
         global $conn;
-        
-        $result = mysqli_query($conn, "SELECT score FROM users WHERE userName='user'");
+
+        $result = $conn->query("SELECT score FROM users WHERE userName='user';");
         if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
         $row = mysqli_fetch_assoc($result);
         return $row['score'];
@@ -47,9 +48,6 @@
         $row = mysqli_fetch_assoc($result);
         return $row['answer'];
     }
-
-    $count = 1;
-    echo getRightAnswer();
 ?>
 
 <!DOCTYPE html>
@@ -75,18 +73,22 @@
 
         <div class="main__card">
             <div class="main__card__header">
-                <a class="main__card__header__buttonExit" href="../index.php"><img class="main__card__header__buttonExit__img" src="../images/icons/closeIcon.png" alt="X"></a>
+                <button class="main__card__header__closeButton" onClick="clearLocalstorage()">
+                    <a class="main__card__header__buttonExit" href="../index.php">
+                        <img class="main__card__header__buttonExit__img" src="../images/icons/closeIcon.png" alt="X">
+                    </a>
+                </button>
                 <div class="main__card__header__wrapper">
-                    <p class="main__card__header__wrapper__counter"> <?php echo (($count <= 9 and $count >= 0) ? "0$count" : "$count"); ?> </p>
+                    <p class="main__card__header__wrapper__counter" id="headerCounter"> 01 </p>
                 </div>
                 <div class="main__card__header__wrapper__rightCounter">
                     <img class="main__card__header__wrapper__rightCounter__img" src="../images/icons/heart.png" alt="?">
-                    <p class="main__card__header__wrapper__rightCounter__text"><?php echo getRightScore(); ?></p>
+                    <p class="main__card__header__wrapper__rightCounter__text" id="rightCounter">0</p>
                 </div>
             </div>
             <div class="main__card__body">
                 <img src="https://img.freepik.com/free-photo/abstract-autumn-beauty-multi-colored-leaf-vein-pattern-generated-by-ai_188544-9871.jpg" alt="questionImage">
-                <p class="main__card__body__counter">question <?php echo $count; ?> of 10</p>
+                <p class="main__card__body__counter" id="counter">question 1 of 10</p>
                 <p class="main__card__body__question"><?php echo getQuestion(); ?></p>
             </div>
             <div class="main__card__buttons" method="post">
@@ -107,21 +109,24 @@
                         <label for=""><?php echo getAnswer(4) ?> </label>
                         <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="4">
                     </div>
-                    <button type="submit" name="answerButton" class="main__card__buttons__button">ОТВЕТИТЬ</button>
+                    <button type="submit" name="answerButton" class="main__card__buttons__button" onclick="submitForm()">ОТВЕТИТЬ</button>
                 </form>
-
+                <?php echo getRightAnswer(); ?>
                 <?php
                     if(isset($_POST['answerButton'])) {
                         $userAnswer = (int)$_POST["answerButtonCheck"];
-                        if ($userAnswer == getRightAnswer()) {
-                            $rightCount = getRightScore() + 1;
-                            $result = mysqli_query($conn, "UPDATE users SET score=$rightCount WHERE userName='user'");
-                            if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
-                        }
+                        if ($userAnswer == $rigthAnswer) { echo "<p id='answer'>true</p>"; }
+                        else { echo "<p id='answer'>false</p>"; }
+                        echo $userAnswer . "==" . $rigthAnswer;
                     }
                 ?>
             </div>
         </div>
     </div>
+<script src="../scripts/laba9.js"></script>
 </body>
 </html>
+
+<?php $conn->close(); ?>
+
+<!-- мы не видим будущее -->

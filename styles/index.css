@@ -30,6 +30,11 @@
     align-items: center;
 }
 
+.main__card__header__closeButton {
+    border: none;
+    background-color: #0000;
+}
+
 .main__card__header__buttonExit {
     border: 2px solid #fff6;
     border-radius: 50%;
