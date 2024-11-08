@@ -1,55 +1,22 @@
 <?php
-    $conn = mysqli_connect("localhost", "root", "", "quiz");
+    include "../logic/laba9/questions.php";
+    include "../logic/laba9/users.php";
 
-    if (!$conn) {
-        die("Ошибка подключения: " . mysqli_connect_error());
-    }
+    $conn = mysqli_connect("localhost", "root", "", "quiz");
+    if (!$conn) { die("Ошибка подключения: " . mysqli_connect_error()); }
     
     $randNumber = rand(1, 10);
 
-    function getQuestion() {
-        global $randNumber;
-        global $conn;
-
-        $result = mysqli_query($conn, "SELECT title FROM questions WHERE id = $randNumber");
-        if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
-        $row = mysqli_fetch_assoc($result);
-        return $row['title'];
-    }
-
-    function getAnswer($n) {
-        global $randNumber;
-        global $conn;
-        
-        $var = "question_$n";
-        $result = mysqli_query($conn, "SELECT $var FROM questions WHERE id = $randNumber");
-        if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
-        $row = mysqli_fetch_assoc($result);
-        return $row["$var"];
-    }
-
-    function getRightScore() {
-        global $randNumber;
-        global $conn;
-        
-        $result = mysqli_query($conn, "SELECT score FROM users WHERE userName='user'");
-        if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
-        $row = mysqli_fetch_assoc($result);
-        return $row['score'];
-    }
-
-    function getRightAnswer() {
-        global $randNumber;
-        global $conn;
-        
-        $result = mysqli_query($conn, "SELECT answer FROM questions WHERE id = $randNumber");
-        if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
-        $row = mysqli_fetch_assoc($result);
-        return $row['answer'];
-    }
-
+    $rightAnswer = getRightAnswer($conn, $randNumber);
+    $question = getQuestion($conn, $randNumber);
+    $answers = array(getAnswer($conn, $randNumber, 1), getAnswer($conn, $randNumber, 2),
+                     getAnswer($conn, $randNumber, 3), getAnswer($conn, $randNumber, 4)
+    );
     $count = 1;
-    echo getRightAnswer();
+
+    echo "User: " . getUserAnswer($conn) . " " . getUserRightAnswer($conn);
+    echo "<BR>Question:" . $question;
+    foreach($answers as $e) { echo "<BR>Answer: " . $e; }
 ?>
 
 <!DOCTYPE html>
@@ -81,30 +48,30 @@
                 </div>
                 <div class="main__card__header__wrapper__rightCounter">
                     <img class="main__card__header__wrapper__rightCounter__img" src="../images/icons/heart.png" alt="?">
-                    <p class="main__card__header__wrapper__rightCounter__text"><?php echo getRightScore(); ?></p>
+                    <p class="main__card__header__wrapper__rightCounter__text"><?php echo '?' ?></p>
                 </div>
             </div>
             <div class="main__card__body">
                 <img src="https://img.freepik.com/free-photo/abstract-autumn-beauty-multi-colored-leaf-vein-pattern-generated-by-ai_188544-9871.jpg" alt="questionImage">
-                <p class="main__card__body__counter">question <?php echo $count; ?> of 10</p>
-                <p class="main__card__body__question"><?php echo getQuestion(); ?></p>
+                <p class="main__card__body__counter">question 1 of 10</p>
+                <p class="main__card__body__question"><?php echo $question; ?></p>
             </div>
             <div class="main__card__buttons" method="post">
-                <form class="main__card__buttons__form" method="post">
+                <form class="main__card__buttons__form" method="post" action="">
                     <div class="main__card__buttons__buttonWrappers">
-                        <label for=""><?php echo getAnswer(1) ?> </label>
+                        <label for=""><?php echo $answers[0]; ?> </label>
                         <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="1">
                     </div>
                     <div class="main__card__buttons__buttonWrappers">
-                        <label for=""><?php echo getAnswer(2) ?> </label>
+                        <label for=""><?php echo $answers[1] ?> </label>
                         <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="2">
                     </div>
                     <div class="main__card__buttons__buttonWrappers">
-                        <label for=""><?php echo getAnswer(3) ?> </label>
+                        <label for=""><?php echo $answers[2] ?> </label>
                         <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="3">
                     </div>
                     <div class="main__card__buttons__buttonWrappers">
-                        <label for=""><?php echo getAnswer(4) ?> </label>
+                        <label for=""><?php echo $answers[3] ?> </label>
                         <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="4">
                     </div>
                     <button type="submit" name="answerButton" class="main__card__buttons__button">ОТВЕТИТЬ</button>
@@ -113,11 +80,9 @@
                 <?php
                     if(isset($_POST['answerButton'])) {
                         $userAnswer = (int)$_POST["answerButtonCheck"];
-                        if ($userAnswer == getRightAnswer()) {
-                            $rightCount = getRightScore() + 1;
-                            $result = mysqli_query($conn, "UPDATE users SET score=$rightCount WHERE userName='user'");
-                            if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
-                        }
+                        setUserAnswer($conn, $userAnswer);
+                        setRightAnswer($conn, $rightAnswer);
+                        if ($userAnswer == $rightAnswer) { echo "right"; }
                     }
                 ?>
             </div>
@@ -125,3 +90,5 @@
     </div>
 </body>
 </html>
+
+<?php mysqli_close($conn); ?>
