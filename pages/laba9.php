@@ -8,15 +8,12 @@
     $randNumber = rand(1, 10);
 
     $rightAnswer = getRightAnswer($conn, $randNumber);
+    setRightAnswer($conn, $rightAnswer);
     $question = getQuestion($conn, $randNumber);
     $answers = array(getAnswer($conn, $randNumber, 1), getAnswer($conn, $randNumber, 2),
                      getAnswer($conn, $randNumber, 3), getAnswer($conn, $randNumber, 4)
     );
     $count = 1;
-
-    echo "User: " . getUserAnswer($conn) . " " . getUserRightAnswer($conn);
-    echo "<BR>Question:" . $question;
-    foreach($answers as $e) { echo "<BR>Answer: " . $e; }
 ?>
 
 <!DOCTYPE html>
@@ -36,6 +33,15 @@
     <title>Викторина</title>
 </head>
 <body>
+
+<script>
+    if (!(localStorage.getItem('counter'))) {
+        localStorage.setItem('counter', JSON.stringify({
+            "rightCounter": 0
+        }));
+    }
+</script>
+
     <div class="main">
 
         <div class="circle"></div>
@@ -44,7 +50,7 @@
             <div class="main__card__header">
                 <a class="main__card__header__buttonExit" href="../index.php"><img class="main__card__header__buttonExit__img" src="../images/icons/closeIcon.png" alt="X"></a>
                 <div class="main__card__header__wrapper">
-                    <p class="main__card__header__wrapper__counter"> <?php echo (($count <= 9 and $count >= 0) ? "0$count" : "$count"); ?> </p>
+                    <p class="main__card__header__wrapper__counter"> тут таймер, сука </p>
                 </div>
                 <div class="main__card__header__wrapper__rightCounter">
                     <img class="main__card__header__wrapper__rightCounter__img" src="../images/icons/heart.png" alt="?">
@@ -53,11 +59,36 @@
             </div>
             <div class="main__card__body">
                 <img src="https://img.freepik.com/free-photo/abstract-autumn-beauty-multi-colored-leaf-vein-pattern-generated-by-ai_188544-9871.jpg" alt="questionImage">
-                <p class="main__card__body__counter">question 1 of 10</p>
+                <p class="main__card__body__counter" id="questionsCounter">question 1 of 10</p>
                 <p class="main__card__body__question"><?php echo $question; ?></p>
             </div>
-            <div class="main__card__buttons" method="post">
-                <form class="main__card__buttons__form" method="post" action="">
+            <div class="main__card__buttons">
+
+<script>
+    function getAnswer() {
+        var radioButtons = document.querySelectorAll('input[name="answerButtonCheck"]');
+        for (var radioButton of radioButtons) {
+            if (radioButton.checked) {
+                var userAnswer = radioButton.value;
+            }
+        }
+        fetch('test.php').then(response => response.json()).then(data => {
+
+            if (userAnswer === data.message) {
+                var x = JSON.parse(localStorage.getItem('counter')).rightCounter + 1;
+                localStorage.setItem('counter', JSON.stringify({
+                    "rightCounter": x
+                }));
+                console.log(`${userAnswer} --- ${data.message}`);
+            }
+
+        }).catch(error => console.error('Error:', error));
+
+        // document.getElementById('renredSite').click();
+    }
+</script>
+
+                <form class="main__card__buttons__form">
                     <div class="main__card__buttons__buttonWrappers">
                         <label for=""><?php echo $answers[0]; ?> </label>
                         <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="1">
@@ -74,18 +105,11 @@
                         <label for=""><?php echo $answers[3] ?> </label>
                         <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="4">
                     </div>
-                    <button type="submit" name="answerButton" class="main__card__buttons__button">ОТВЕТИТЬ</button>
+                    <button id='renredSite'>!!!</button>
                 </form>
-
-                <?php
-                    if(isset($_POST['answerButton'])) {
-                        $userAnswer = (int)$_POST["answerButtonCheck"];
-                        setUserAnswer($conn, $userAnswer);
-                        setRightAnswer($conn, $rightAnswer);
-                        if ($userAnswer == $rightAnswer) { echo "right"; }
-                    }
-                ?>
+                <button onClick='getAnswer()' class="main__card__buttons__button">ОТВЕТИТЬ</button>
             </div>
+            <div id="result"></div>
         </div>
     </div>
 </body>
