@@ -39,6 +39,11 @@
     justify-content: center;
 }
 
+.main__card__header__buttonExit__closeButton {
+    border: none;
+    background-color: #0000;
+}
+
 .main__card__header__wrapper {
     border: 2px solid #fff6;
     border-radius: 50%;
