@@ -34,10 +34,9 @@ function getAnswer() {
             "rightCounter": temp_rightCounter,
             "questionCounter": temp_questionsCounter
         }));
-
     }).catch(error => console.error('Error:', error));
 
-    document.getElementById('renredSite').click();
+    location.reload();
 }
 
 function clearLocalStorage() { localStorage.removeItem('counter'); }

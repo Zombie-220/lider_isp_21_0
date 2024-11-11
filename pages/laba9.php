@@ -16,7 +16,7 @@
     $question = getQuestion($conn, $randNumber);
     $answers = array(getAnswer($conn, $randNumber, 1), getAnswer($conn, $randNumber, 2), getAnswer($conn, $randNumber, 3), getAnswer($conn, $randNumber, 4));
 
-    setAskedQuestions($conn, $askedQuestions.",$randNumber");
+    // setAskedQuestions($conn, $askedQuestions.",$randNumber");
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +37,13 @@
 </head>
 <body>
     <div class="main">
-        <div class="main__card">
+
+        <div id="auth">
+            <input id="auth_userNameInput" type="text" placeholder="Имя пользователя">
+            <button onClick="auth()">Авторизоваться</button>
+        </div>
+
+        <div class="main__card" id="card">
             <div class="main__card__header">
                 <button onClick="clearLocalStorage()" class='main__card__header__buttonExit__closeButton'>
                     <a class="main__card__header__buttonExit" href="../index.php">
@@ -75,12 +81,25 @@
                         <label for=""> <?php echo $answers[3] ?> </label>
                         <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="4">
                     </div>
-                    <button id='renredSite' style="display: none;">!!!</button>
                 </form>
                 <button onClick='getAnswer()' class="main__card__buttons__button">ОТВЕТИТЬ</button>
             </div>
         </div>
     </div>
+    <script>
+        function auth() {
+            let userName = document.getElementById("auth_userNameInput").value;
+            console.log(userName);
+            localStorage.setItem("quiz_user", JSON.stringify({"userName": userName}));
+            location.reload();
+        }
+
+        if (!(JSON.parse(localStorage.getItem("quiz_user")))) {
+            document.getElementById("card").style.display = "none";
+        } else {
+            document.getElementById("auth").style.display = "none";
+        }
+    </script>
 
 <script src='../logic/laba9/logic.js'></script>
 </body>
