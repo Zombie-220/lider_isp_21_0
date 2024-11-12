@@ -7,7 +7,9 @@
 
     $randNumber = rand(1, 10);
     $askedQuestions = getAskedQuestions($conn);
-    echo $askedQuestions.",$randNumber";
+    echo "Счетчик вопросов (чекай конец по длинне массива, а не по счетчику)<BR>";
+    echo "Несколько пользователей<BR>";
+    echo "Таймер";
     $askedQuestionsArray = explode(',', $askedQuestions);
     while (in_array($randNumber, $askedQuestionsArray) !== false) { $randNumber = rand(1, 10); }
 
@@ -29,7 +31,7 @@
     <meta name="description" content="main page">
     <meta name="keywords" content="php, html">
     <meta name="author" content="Lider Denis">
-    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/quiz.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Atomic+Age&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
@@ -64,42 +66,13 @@
                 <p class="main__card__body__question"><?php echo $question; ?></p>
             </div>
             <div class="main__card__buttons">
-                <form class="main__card__buttons__form">
-                    <div class="main__card__buttons__buttonWrappers">
-                        <label for=""> <?php echo $answers[0]; ?> </label>
-                        <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="1">
-                    </div>
-                    <div class="main__card__buttons__buttonWrappers">
-                        <label for=""> <?php echo $answers[1] ?> </label>
-                        <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="2">
-                    </div>
-                    <div class="main__card__buttons__buttonWrappers">
-                        <label for=""> <?php echo $answers[2] ?> </label>
-                        <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="3">
-                    </div>
-                    <div class="main__card__buttons__buttonWrappers">
-                        <label for=""> <?php echo $answers[3] ?> </label>
-                        <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="4">
-                    </div>
-                </form>
-                <button onClick='getAnswer()' class="main__card__buttons__button">ОТВЕТИТЬ</button>
+                <button class="main__card__buttons__form__button" onClick="getAnswer(1)"> <?php echo $answers[0] ?> </button>
+                <button class="main__card__buttons__form__button" onClick="getAnswer(2)"> <?php echo $answers[1] ?> </button>
+                <button class="main__card__buttons__form__button" onClick="getAnswer(3)"> <?php echo $answers[2] ?> </button>
+                <button class="main__card__buttons__form__button" onClick="getAnswer(4)"> <?php echo $answers[3] ?> </button>
             </div>
         </div>
     </div>
-    <script>
-        function auth() {
-            let userName = document.getElementById("auth_userNameInput").value;
-            console.log(userName);
-            localStorage.setItem("quiz_user", JSON.stringify({"userName": userName}));
-            location.reload();
-        }
-
-        if (!(JSON.parse(localStorage.getItem("quiz_user")))) {
-            document.getElementById("card").style.display = "none";
-        } else {
-            document.getElementById("auth").style.display = "none";
-        }
-    </script>
 
 <script src='../logic/laba9/logic.js'></script>
 </body>

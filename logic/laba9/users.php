@@ -22,4 +22,9 @@ function setAskedQuestions($conn, $value) {
     $result = mysqli_query($conn, "UPDATE users SET askedQuestions='$value' WHERE userName='user'");
     if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
 }
+
+function createUser($conn, $userName) {
+    $result = mysqli_query($conn, "INSERT INTO users(userName) VALUES($userName)");
+    if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
+}
 ?>
