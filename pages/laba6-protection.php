@@ -3,7 +3,7 @@
     include "../template/footer.php";
     include "../template/task.php";
 
-    include "../logic/protection/laba6.php";
+    include "../logic/protection/laba6/laba6.php";
 ?>
 
 <!DOCTYPE html>

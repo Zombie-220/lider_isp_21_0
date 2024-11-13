@@ -1,53 +1,20 @@
 <?php
-    $conn = new mysqli("localhost", "root", "", "quiz");
+    include "../logic/laba9/questions.php";
+    include "../logic/laba9/users.php";
 
-    if ($conn->connect_error) {
-        die("Ошибка подключения: " . mysqli_connect_error());
-    }
-    
+    $conn = mysqli_connect("localhost", "root", "", "quiz");
+    if (!$conn) { die("Ошибка подключения: " . mysqli_connect_error()); }
+
     $randNumber = rand(1, 10);
     $rigthAnswer = getRightAnswer();
 
-    function getQuestion() {
-        global $randNumber;
-        global $conn;
+    echo "Мониторинг вопросов (чекай конец по длинне массива, а не по счетчику)<BR>";
+    echo "Несколько пользователей<BR>";
+    echo "Таймер";
 
-        $result = $conn->query("SELECT title FROM questions WHERE id = $randNumber;");
-        if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
-        $row = mysqli_fetch_assoc($result);
-        return $row['title'];
-    }
-
-    function getAnswer($n) {
-        global $randNumber;
-        global $conn;
-
-        $var = "question_$n";
-        $result = $conn->query("SELECT $var FROM questions WHERE id = $randNumber;");
-        if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
-        $row = mysqli_fetch_assoc($result);
-        return $row["$var"];
-    }
-
-    function getRightScore() {
-        global $randNumber;
-        global $conn;
-
-        $result = $conn->query("SELECT score FROM users WHERE userName='user';");
-        if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
-        $row = mysqli_fetch_assoc($result);
-        return $row['score'];
-    }
-
-    function getRightAnswer() {
-        global $randNumber;
-        global $conn;
-        
-        $result = mysqli_query($conn, "SELECT answer FROM questions WHERE id = $randNumber");
-        if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
-        $row = mysqli_fetch_assoc($result);
-        return $row['answer'];
-    }
+    $rightAnswer = getRightAnswer($conn, $randNumber);
+    setRightAnswer($conn, $rightAnswer);
+    $answers = array(getAnswer($conn, $randNumber, 1), getAnswer($conn, $randNumber, 2), getAnswer($conn, $randNumber, 3), getAnswer($conn, $randNumber, 4));
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +27,7 @@
     <meta name="description" content="main page">
     <meta name="keywords" content="php, html">
     <meta name="author" content="Lider Denis">
-    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/quiz.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Atomic+Age&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
@@ -68,65 +35,68 @@
 </head>
 <body>
     <div class="main">
-
-        <div class="circle"></div>
-
         <div class="main__card">
             <div class="main__card__header">
-                <button class="main__card__header__closeButton" onClick="clearLocalstorage()">
+                <button onClick="clearLocalStorage()" class='main__card__header__buttonExit__closeButton'>
                     <a class="main__card__header__buttonExit" href="../index.php">
                         <img class="main__card__header__buttonExit__img" src="../images/icons/closeIcon.png" alt="X">
                     </a>
                 </button>
                 <div class="main__card__header__wrapper">
-                    <p class="main__card__header__wrapper__counter" id="headerCounter"> 01 </p>
+                    <p class="main__card__header__wrapper__counter">тут таймер, сука</p>
                 </div>
                 <div class="main__card__header__wrapper__rightCounter">
                     <img class="main__card__header__wrapper__rightCounter__img" src="../images/icons/heart.png" alt="?">
-                    <p class="main__card__header__wrapper__rightCounter__text" id="rightCounter">0</p>
+                    <p class="main__card__header__wrapper__rightCounter__text" id='rightCounter'>?</p>
                 </div>
             </div>
             <div class="main__card__body">
                 <img src="https://img.freepik.com/free-photo/abstract-autumn-beauty-multi-colored-leaf-vein-pattern-generated-by-ai_188544-9871.jpg" alt="questionImage">
-                <p class="main__card__body__counter" id="counter">question 1 of 10</p>
-                <p class="main__card__body__question"><?php echo getQuestion(); ?></p>
+                <p class="main__card__body__counter" id="questionsCounter">question ? of 10</p>
+                <p class="main__card__body__question" id='questionWording'>?</p>
             </div>
-            <div class="main__card__buttons" method="post">
-                <form class="main__card__buttons__form" method="post">
-                    <div class="main__card__buttons__buttonWrappers">
-                        <label for=""><?php echo getAnswer(1) ?> </label>
-                        <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="1">
-                    </div>
-                    <div class="main__card__buttons__buttonWrappers">
-                        <label for=""><?php echo getAnswer(2) ?> </label>
-                        <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="2">
-                    </div>
-                    <div class="main__card__buttons__buttonWrappers">
-                        <label for=""><?php echo getAnswer(3) ?> </label>
-                        <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="3">
-                    </div>
-                    <div class="main__card__buttons__buttonWrappers">
-                        <label for=""><?php echo getAnswer(4) ?> </label>
-                        <input type="radio" class="main__card__buttons__buttonRadio" name="answerButtonCheck" value="4">
-                    </div>
-                    <button type="submit" name="answerButton" class="main__card__buttons__button" onclick="submitForm()">ОТВЕТИТЬ</button>
-                </form>
-                <?php echo getRightAnswer(); ?>
-                <?php
-                    if(isset($_POST['answerButton'])) {
-                        $userAnswer = (int)$_POST["answerButtonCheck"];
-                        if ($userAnswer == $rigthAnswer) { echo "<p id='answer'>true</p>"; }
-                        else { echo "<p id='answer'>false</p>"; }
-                        echo $userAnswer . "==" . $rigthAnswer;
-                    }
-                ?>
+            <div class="main__card__buttons">
+                <button class="main__card__buttons__form__button" onClick="getAnswer(1)"> <?php echo $answers[0] ?> </button>
+                <button class="main__card__buttons__form__button" onClick="getAnswer(2)"> <?php echo $answers[1] ?> </button>
+                <button class="main__card__buttons__form__button" onClick="getAnswer(3)"> <?php echo $answers[2] ?> </button>
+                <button class="main__card__buttons__form__button" onClick="getAnswer(4)"> <?php echo $answers[3] ?> </button>
             </div>
         </div>
     </div>
-<script src="../scripts/laba9.js"></script>
+
+<script>
+    if (!(localStorage.getItem('counters'))) {
+        localStorage.setItem('counters', JSON.stringify({
+            "rightCounter": 0,
+            "questionCounter": 1,
+            "askedQuestions": "0"
+        }));
+        var rightCounter = 0;
+        var questionCounter = 1;
+        var askedQuestions = '0';
+    } else {
+        var rightCounter = JSON.parse(localStorage.getItem('counters')).rightCounter;
+        var questionCounter = JSON.parse(localStorage.getItem('counters')).questionCounter;
+        var askedQuestions = JSON.parse(localStorage.getItem('counters')).askedQuestions;
+    }
+    document.getElementById('rightCounter').innerText = rightCounter;
+    document.getElementById('questionsCounter').innerText = `question ${questionCounter} of 10`;
+
+    var randomNumber = 0
+    let askedQuestionsArray = askedQuestions.split(",");
+    while (randomNumber in askedQuestionsArray) { randomNumber = Math.floor(Math.random() * 10) + 1; }
+
+    fetch('../logic/laba9/getQuestionById.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 'randomNumber': randomNumber })
+    }).then(response => response.json()).then(data => {
+        document.getElementById('questionWording').innerText = (JSON.stringify(data.question)).slice(1, -1);
+    }).catch(error => { console.error('Error at getQuestionById:', error) })
+</script>
+
+<script src='../logic/laba9/logic.js'></script>
 </body>
 </html>
 
-<?php $conn->close(); ?>
-
-<!-- мы не видим будущее -->
+<?php mysqli_close($conn); ?>
