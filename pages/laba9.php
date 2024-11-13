@@ -6,19 +6,14 @@
     if (!$conn) { die("Ошибка подключения: " . mysqli_connect_error()); }
 
     $randNumber = rand(1, 10);
-    $askedQuestions = getAskedQuestions($conn);
-    echo "Счетчик вопросов (чекай конец по длинне массива, а не по счетчику)<BR>";
+
+    echo "Мониторинг вопросов (чекай конец по длинне массива, а не по счетчику)<BR>";
     echo "Несколько пользователей<BR>";
     echo "Таймер";
-    $askedQuestionsArray = explode(',', $askedQuestions);
-    while (in_array($randNumber, $askedQuestionsArray) !== false) { $randNumber = rand(1, 10); }
 
     $rightAnswer = getRightAnswer($conn, $randNumber);
     setRightAnswer($conn, $rightAnswer);
-    $question = getQuestion($conn, $randNumber);
     $answers = array(getAnswer($conn, $randNumber, 1), getAnswer($conn, $randNumber, 2), getAnswer($conn, $randNumber, 3), getAnswer($conn, $randNumber, 4));
-
-    // setAskedQuestions($conn, $askedQuestions.",$randNumber");
 ?>
 
 <!DOCTYPE html>
@@ -39,13 +34,7 @@
 </head>
 <body>
     <div class="main">
-
-        <div id="auth">
-            <input id="auth_userNameInput" type="text" placeholder="Имя пользователя">
-            <button onClick="auth()">Авторизоваться</button>
-        </div>
-
-        <div class="main__card" id="card">
+        <div class="main__card">
             <div class="main__card__header">
                 <button onClick="clearLocalStorage()" class='main__card__header__buttonExit__closeButton'>
                     <a class="main__card__header__buttonExit" href="../index.php">
@@ -63,7 +52,7 @@
             <div class="main__card__body">
                 <img src="https://img.freepik.com/free-photo/abstract-autumn-beauty-multi-colored-leaf-vein-pattern-generated-by-ai_188544-9871.jpg" alt="questionImage">
                 <p class="main__card__body__counter" id="questionsCounter">question ? of 10</p>
-                <p class="main__card__body__question"><?php echo $question; ?></p>
+                <p class="main__card__body__question" id='questionWording'>?</p>
             </div>
             <div class="main__card__buttons">
                 <button class="main__card__buttons__form__button" onClick="getAnswer(1)"> <?php echo $answers[0] ?> </button>
@@ -73,6 +62,37 @@
             </div>
         </div>
     </div>
+
+<script>
+    if (!(localStorage.getItem('counters'))) {
+        localStorage.setItem('counters', JSON.stringify({
+            "rightCounter": 0,
+            "questionCounter": 1,
+            "askedQuestions": "0"
+        }));
+        var rightCounter = 0;
+        var questionCounter = 1;
+        var askedQuestions = '0';
+    } else {
+        var rightCounter = JSON.parse(localStorage.getItem('counters')).rightCounter;
+        var questionCounter = JSON.parse(localStorage.getItem('counters')).questionCounter;
+        var askedQuestions = JSON.parse(localStorage.getItem('counters')).askedQuestions;
+    }
+    document.getElementById('rightCounter').innerText = rightCounter;
+    document.getElementById('questionsCounter').innerText = `question ${questionCounter} of 10`;
+
+    var randomNumber = 0
+    let askedQuestionsArray = askedQuestions.split(",");
+    while (randomNumber in askedQuestionsArray) { randomNumber = Math.floor(Math.random() * 10) + 1; }
+
+    fetch('../logic/laba9/getQuestionById.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 'randomNumber': randomNumber })
+    }).then(response => response.json()).then(data => {
+        document.getElementById('questionWording').innerText = (JSON.stringify(data.question)).slice(1, -1);
+    }).catch(error => { console.error('Error at getQuestionById:', error) })
+</script>
 
 <script src='../logic/laba9/logic.js'></script>
 </body>
