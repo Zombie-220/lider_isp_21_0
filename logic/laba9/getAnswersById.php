@@ -13,10 +13,10 @@ $conn = mysqli_connect("localhost", "root", "", "quiz");
 if (!$conn) { die("Ошибка подключения: " . mysqli_connect_error()); }
 
 $answers = array(
-    __getAnswer($conn, $data->questionNumber, 1),
-    __getAnswer($conn, $data->questionNumber, 2),
-    __getAnswer($conn, $data->questionNumber, 3),
-    __getAnswer($conn, $data->questionNumber, 4)
+    __getAnswer($conn, $data->questionCounter, 1),
+    __getAnswer($conn, $data->questionCounter, 2),
+    __getAnswer($conn, $data->questionCounter, 3),
+    __getAnswer($conn, $data->questionCounter, 4)
 );
 
 mysqli_close($conn);

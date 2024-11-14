@@ -12,8 +12,6 @@ function getAnswer(number) {
         localStorage.setItem('counters', JSON.stringify({
             'rightCounter': temp_rightCounter,
             'questionCounter': JSON.parse(localStorage.getItem('counters')).questionCounter + 1,
-            'askedQuestions': JSON.parse(localStorage.getItem('counters')).askedQuestions + `,${questionId}`,
-            'questionNumber': 0
         }));
     }).catch(error => { console.error('Error at getRightAnswerById:', error) })
 
