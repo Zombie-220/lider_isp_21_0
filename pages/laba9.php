@@ -5,16 +5,9 @@
     $conn = mysqli_connect("localhost", "root", "", "quiz");
     if (!$conn) { die("Ошибка подключения: " . mysqli_connect_error()); }
 
-    $randNumber = rand(1, 10);
-    $rigthAnswer = getRightAnswer();
-
     echo "Мониторинг вопросов (чекай конец по длинне массива, а не по счетчику)<BR>";
     echo "Несколько пользователей<BR>";
     echo "Таймер";
-
-    $rightAnswer = getRightAnswer($conn, $randNumber);
-    setRightAnswer($conn, $rightAnswer);
-    $answers = array(getAnswer($conn, $randNumber, 1), getAnswer($conn, $randNumber, 2), getAnswer($conn, $randNumber, 3), getAnswer($conn, $randNumber, 4));
 ?>
 
 <!DOCTYPE html>
@@ -47,19 +40,19 @@
                 </div>
                 <div class="main__card__header__wrapper__rightCounter">
                     <img class="main__card__header__wrapper__rightCounter__img" src="../images/icons/heart.png" alt="?">
-                    <p class="main__card__header__wrapper__rightCounter__text" id='rightCounter'>?</p>
+                    <p class="main__card__header__wrapper__rightCounter__text" id='rightCounter'>rightCounter</p>
                 </div>
             </div>
             <div class="main__card__body">
                 <img src="https://img.freepik.com/free-photo/abstract-autumn-beauty-multi-colored-leaf-vein-pattern-generated-by-ai_188544-9871.jpg" alt="questionImage">
                 <p class="main__card__body__counter" id="questionsCounter">question ? of 10</p>
-                <p class="main__card__body__question" id='questionWording'>?</p>
+                <p class="main__card__body__question" id='questionWording'>questionWording</p>
             </div>
             <div class="main__card__buttons">
-                <button class="main__card__buttons__form__button" onClick="getAnswer(1)"> <?php echo $answers[0] ?> </button>
-                <button class="main__card__buttons__form__button" onClick="getAnswer(2)"> <?php echo $answers[1] ?> </button>
-                <button class="main__card__buttons__form__button" onClick="getAnswer(3)"> <?php echo $answers[2] ?> </button>
-                <button class="main__card__buttons__form__button" onClick="getAnswer(4)"> <?php echo $answers[3] ?> </button>
+                <button class="main__card__buttons__form__button" onClick="getAnswer(1)">answer_1</button>
+                <button class="main__card__buttons__form__button" onClick="getAnswer(2)">answer_2</button>
+                <button class="main__card__buttons__form__button" onClick="getAnswer(3)">answer_3</button>
+                <button class="main__card__buttons__form__button" onClick="getAnswer(4)">answer_4</button>
             </div>
         </div>
     </div>
@@ -69,30 +62,67 @@
         localStorage.setItem('counters', JSON.stringify({
             "rightCounter": 0,
             "questionCounter": 1,
-            "askedQuestions": "0"
+            "askedQuestions": "0",
+            "questionNumber": 0
         }));
         var rightCounter = 0;
         var questionCounter = 1;
         var askedQuestions = '0';
+        var questionNumber = 0;
     } else {
         var rightCounter = JSON.parse(localStorage.getItem('counters')).rightCounter;
         var questionCounter = JSON.parse(localStorage.getItem('counters')).questionCounter;
         var askedQuestions = JSON.parse(localStorage.getItem('counters')).askedQuestions;
+        var questionNumber = JSON.parse(localStorage.getItem('counters')).questionNumber;
     }
     document.getElementById('rightCounter').innerText = rightCounter;
     document.getElementById('questionsCounter').innerText = `question ${questionCounter} of 10`;
 
-    var randomNumber = 0
     let askedQuestionsArray = askedQuestions.split(",");
-    while (randomNumber in askedQuestionsArray) { randomNumber = Math.floor(Math.random() * 10) + 1; }
+    while (questionNumber in askedQuestionsArray) { questionNumber = Math.floor(Math.random() * 10) + 1; }
+    localStorage.setItem('counters', JSON.stringify({
+        'rightCounter': rightCounter,
+        'questionCounter': JSON.parse(localStorage.getItem('counters')).questionCounter,
+        'askedQuestions': JSON.parse(localStorage.getItem('counters')).askedQuestions,
+        'questionNumber': questionNumber
+    }))
 
     fetch('../logic/laba9/getQuestionById.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 'randomNumber': randomNumber })
+        body: JSON.stringify({ 'questionNumber': questionNumber })
     }).then(response => response.json()).then(data => {
         document.getElementById('questionWording').innerText = (JSON.stringify(data.question)).slice(1, -1);
     }).catch(error => { console.error('Error at getQuestionById:', error) })
+
+    fetch('../logic/laba9/getAnswersById.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 'questionNumber': questionNumber })
+    }).then(response => response.json()).then(data => {
+        let buttonsArray = document.getElementsByClassName("main__card__buttons__form__button");
+        for(var i=0; i<buttonsArray.length; i++) {
+            buttonsArray[i].innerText = (data.answers[i]);
+        }
+    }).catch(error => { console.error('Error at getAnswersById:', error) })
+
+    /*
+        1. запрос за правильным ответом и его проврека
+        --- старый функционал готов ---
+        2. учет заданых вопросов делай на localStorage, можно прям в counters
+        3. по окончании вопросов выводить форму с добавлением пользователя (
+            1. пользователь вводит имя
+            2. отправляем запись в базу с именем и score
+        )
+        4. ебучий таймер (30000 ms)...
+        5. таблица лидеров отдельной page
+
+
+
+        1 день: 1, 2 пункты
+        2 день: 3 и 5 пункты
+        3 - 4 день: 4 пункт
+    */
 </script>
 
 <script src='../logic/laba9/logic.js'></script>
