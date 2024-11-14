@@ -5,9 +5,9 @@
     $conn = mysqli_connect("localhost", "root", "", "quiz");
     if (!$conn) { die("Ошибка подключения: " . mysqli_connect_error()); }
 
-    echo "Мониторинг вопросов (чекай конец по длинне массива, а не по счетчику)<BR>";
-    echo "Несколько пользователей<BR>";
-    echo "Таймер";
+    // echo "Мониторинг вопросов (чекай конец по длинне массива, а не по счетчику)<BR>";
+    // echo "Несколько пользователей<BR>";
+    // echo "Таймер";
 ?>
 
 <!DOCTYPE html>
@@ -78,8 +78,13 @@
     document.getElementById('rightCounter').innerText = rightCounter;
     document.getElementById('questionsCounter').innerText = `question ${questionCounter} of 10`;
 
-    let askedQuestionsArray = askedQuestions.split(",");
-    while (questionNumber in askedQuestionsArray) { questionNumber = Math.floor(Math.random() * 10) + 1; }
+    // let askedQuestionsArray = askedQuestions.split(",");
+    // while (questionNumber in askedQuestionsArray) { questionNumber = Math.floor(Math.random() * 10) + 1; }
+
+    // for (let i=0; i<askedQuestionsArray.length; i++) {
+    //     console.log(`${questionNumber}` === `${askedQuestionsArray[i]}`);
+    // }
+
     localStorage.setItem('counters', JSON.stringify({
         'rightCounter': rightCounter,
         'questionCounter': JSON.parse(localStorage.getItem('counters')).questionCounter,
@@ -90,7 +95,7 @@
     fetch('../logic/laba9/getQuestionById.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 'questionNumber': questionNumber })
+        body: JSON.stringify({ 'questionNumber': questionCounter })
     }).then(response => response.json()).then(data => {
         document.getElementById('questionWording').innerText = (JSON.stringify(data.question)).slice(1, -1);
     }).catch(error => { console.error('Error at getQuestionById:', error) })
@@ -98,7 +103,7 @@
     fetch('../logic/laba9/getAnswersById.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 'questionNumber': questionNumber })
+        body: JSON.stringify({ 'questionNumber': questionCounter })
     }).then(response => response.json()).then(data => {
         let buttonsArray = document.getElementsByClassName("main__card__buttons__form__button");
         for(var i=0; i<buttonsArray.length; i++) {
