@@ -15,11 +15,14 @@
     <title>Лидеры</title>
 </head>
 
-<!-- http://localhost/labi/pages/laba9_liderPage.php -->
-
 <body>
+    <header class="liderPage__header">
+        <p class="liderPage__header__header">Таблица лидеров</p>
+        <button onClick="clearSessionStorage()" class="liderPage__header__button">
+            <a href="../index.php" class="liderPage__header__button__link">Назад</a>
+        </button>
+    </header>
     <div id="scoreTable">
-
     </div>
 </body>
 <script>
@@ -33,4 +36,6 @@
         }
     }).catch(error => { console.error('Error at getUsersByScore.php:', error); })
 </script>
+
+<script src="../logic/laba9/logic.js"></script>
 </html>

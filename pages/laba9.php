@@ -24,8 +24,9 @@
                     </a>
                 </button>
                 <div class="main__card__header__wrapper hiddenElemnt">
-                    <p class="main__card__header__wrapper__counter">тут таймер, сука</p>
-                </div>
+                    <div id="countdown">
+                        <div id="countdown-number"></div> <svg> <circle r="18" cx="20" cy="20"></circle> </svg> </div>
+                    </div>
                 <div class="main__card__header__wrapper__rightCounter hiddenElemnt">
                     <img class="main__card__header__wrapper__rightCounter__img" src="../images/icons/heart.png" alt="?">
                     <p class="main__card__header__wrapper__rightCounter__text" id='rightCounter'>rightCounter</p>
@@ -71,6 +72,16 @@
         let hiddneElementsArray = document.getElementsByClassName("hiddenElemnt");
         for (let i=0; i<hiddneElementsArray.length; i++) { hiddneElementsArray[i].style.display = "none"; }
     } else {
+        var countdownNumberEl = document.getElementById('countdown-number');
+        var countdown = 30;
+        countdownNumberEl.textContent = countdown;
+
+        setInterval(function() {
+            countdown = --countdown <= 0 ? 30 : countdown;
+            countdownNumberEl.textContent = countdown;
+            if (countdown <= 1) { getAnswer(5); }
+        }, 1000);
+
         fetch('../logic/laba9/getQuestionById.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -99,24 +110,6 @@
             image.setAttribute('src', data.image);
         }).catch(error => { console.error('Error at getImageById.php:', error) })
     }
-
-    /*
-        + 1. запрос за правильным ответом и его проврека
-        --- старый функционал готов ---
-        + 2. учет заданых вопросов делай на sessionStorage, можно прям в counters
-        3. по окончании вопросов выводить форму с добавлением пользователя (
-            1. пользователь вводит имя
-            2. отправляем запись в базу с именем и score
-        )
-        4. ебучий таймер (30000 ms)...
-        5. таблица лидеров отдельной page
-
-
-
-        + 1 день: 1, 2 пункты
-        2 день: 3 и 5 пункты
-        3 - 4 день: 4 пункт
-    */
 </script>
 
 <script src='../logic/laba9/logic.js'></script>

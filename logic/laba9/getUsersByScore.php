@@ -12,10 +12,11 @@ if (!$result) { die("Ошибка выполнения запроса: " . mysql
 $row = mysqli_fetch_assoc($result);
 $length = $row['id'];
 
+$result = mysqli_query($conn, "SELECT userName, score FROM users ORDER BY score DESC;");
+if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
+
 for ($i=1; $i<=$length; $i++) {
-    $result = mysqli_query($conn, "SELECT userName, score FROM users WHERE id=$i;");
-    if (!$result) { die("Ошибка выполнения запроса: " . mysqli_error($conn)); }
-    $row = mysqli_fetch_assoc($result);
+    $row = mysqli_fetch_array($result);
     if ($row) {
         $usersTable[] = $row['userName'];
         $scoreTable[] = $row['score'];
