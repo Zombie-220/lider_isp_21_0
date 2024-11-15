@@ -1,7 +1,3 @@
-function sleep (time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
-  }
-  
 function getAnswer(number) {
     var questionId = JSON.parse(sessionStorage.getItem("counters")).questionCounter;
     fetch('../logic/laba9/getRightAnswerById.php', {
