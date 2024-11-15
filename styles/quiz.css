@@ -151,6 +151,7 @@ body { margin: 0px; }
 .liderPage__header__header {
     margin: 0px;
     color: #fff;
+    font-size: 30px;
 }
 
 .liderPage__header__button {
@@ -164,6 +165,9 @@ body { margin: 0px; }
     padding: 0px;
     display: block;
     width: 100%;
+    font-size: 30px;
+    color: #fff;
+    text-decoration: none;
 }
 
 #countdown {
@@ -205,5 +209,18 @@ svg circle {
     }
     to {
       stroke-dashoffset: 113px;
+    }
+}
+
+#table {
+    width: 80%;
+    margin: 10px auto;
+    text-align: center;
+}
+
+@media (max-width: 680px) {
+    .liderPage__header {
+        flex-direction: column;
+        padding: 10px;
     }
 }

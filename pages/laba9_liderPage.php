@@ -22,17 +22,28 @@
             <a href="../index.php" class="liderPage__header__button__link">Назад</a>
         </button>
     </header>
-    <div id="scoreTable">
-    </div>
+    <table id="table" border="1">
+        <thead>
+            <tr>
+                <th>Имя пользователя</th>
+                <th>Счёт</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 </body>
 <script>
     fetch('../logic/laba9/getUsersByScore.php')
     .then(response => response.json()).then(data => {
+        var table = document.getElementById("table").getElementsByTagName('tbody')[0];
         for (let i = 0; i < data.usersTable.length; i++) {
-            let new_tr = document.createElement('p');
-            new_tr.textContent = `${data.usersTable[i]} ${data.scoreTable[i]}`;
-            let scoreTable = document.getElementById('scoreTable');
-            scoreTable.appendChild(new_tr);
+
+            var newRow = table.insertRow();
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            cell1.innerHTML = `${data.usersTable[i]}`;
+            cell2.innerHTML = `${data.scoreTable[i]}`;
         }
     }).catch(error => { console.error('Error at getUsersByScore.php:', error); })
 </script>
