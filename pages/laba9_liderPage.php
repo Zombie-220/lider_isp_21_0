@@ -14,7 +14,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Atomic+Age&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <title>Лидеры</title>
 </head>
+
+<!-- http://localhost/labi/pages/laba9_liderPage.php -->
+
 <body>
-    test
+    <div id="scoreTable">
+
+    </div>
 </body>
+<script>
+    fetch('../logic/laba9/getUsersByScore.php')
+    .then(response => response.json()).then(data => {
+        for (let i = 0; i < data.usersTable.length; i++) {
+            let new_tr = document.createElement('p');
+            new_tr.textContent = `${data.usersTable[i]} ${data.scoreTable[i]}`;
+            let scoreTable = document.getElementById('scoreTable');
+            scoreTable.appendChild(new_tr);
+        }
+    }).catch(error => { console.error('Error at getUsersByScore.php:', error); })
+</script>
 </html>

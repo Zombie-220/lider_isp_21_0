@@ -18,7 +18,7 @@
     <div class="main">
         <div class="main__card">
             <div class="main__card__header">
-                <button onClick="clearLocalStorage()" class='main__card__header__buttonExit__closeButton'>
+                <button onClick="clearSessionStorage()" class='main__card__header__buttonExit__closeButton'>
                     <a class="main__card__header__buttonExit" href="../index.php">
                         <img class="main__card__header__buttonExit__img" src="../images/icons/closeIcon.png" alt="X">
                     </a>
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="main__card__body hiddenElemnt">
-                <img src="https://img.freepik.com/free-photo/abstract-autumn-beauty-multi-colored-leaf-vein-pattern-generated-by-ai_188544-9871.jpg" alt="questionImage">
+                <img src="https://thumbs.dreamstime.com/b/no-photo-available-missing-image-no-image-symbol-isolated-white-background-no-photo-available-missing-image-no-image-272386843.jpg" alt="questionImage" id="questionImage">
                 <p class="main__card__body__counter" id="questionsCounter">question ? of 10</p>
                 <p class="main__card__body__question" id='questionWording'>questionWording</p>
             </div>
@@ -42,28 +42,32 @@
                 <button class="main__card__buttons__form__button hiddenElemnt" onClick="getAnswer(3)">answer_3</button>
                 <button class="main__card__buttons__form__button hiddenElemnt" onClick="getAnswer(4)">answer_4</button>
 
-                <a href="./laba9_liderPage.php" style="display: none;" id="toLiderPage">К таблице лидеров</a>
+                <div class="main__card__buttons__hiddenDiv" id="toLiderPage">
+                    <input type="text" placeholder="Имя пользователя" class="main__card__buttons__hiddenDiv__input" id="hiddenDiv__input">
+                    <p class="main__card__buttons__hiddenDiv__text" id="hiddenWarningText">Введите имя пользователя</p>
+                    <button class="main__card__buttons__hiddenDiv__button" onClick="createUser()">К таблице лидеров</button>
+                </div>
             </div>
         </div>
     </div>
 
 <script>
-    if (!(localStorage.getItem('counters'))) {
-        localStorage.setItem('counters', JSON.stringify({
+    if (!(sessionStorage.getItem('counters'))) {
+        sessionStorage.setItem('counters', JSON.stringify({
             "rightCounter": 0,
             "questionCounter": 1,
         }));
         var rightCounter = 0;
         var questionCounter = 1;
     } else {
-        var rightCounter = JSON.parse(localStorage.getItem('counters')).rightCounter;
-        var questionCounter = JSON.parse(localStorage.getItem('counters')).questionCounter;
+        var rightCounter = JSON.parse(sessionStorage.getItem('counters')).rightCounter;
+        var questionCounter = JSON.parse(sessionStorage.getItem('counters')).questionCounter;
     }
     document.getElementById('rightCounter').innerText = rightCounter;
     document.getElementById('questionsCounter').innerText = `question ${questionCounter} of 10`;
 
     if (questionCounter >= 11) {
-        document.getElementById('toLiderPage').style.display = "block";
+        document.getElementById('toLiderPage').style.display = "flex";
         let hiddneElementsArray = document.getElementsByClassName("hiddenElemnt");
         for (let i=0; i<hiddneElementsArray.length; i++) { hiddneElementsArray[i].style.display = "none"; }
     } else {
@@ -85,12 +89,21 @@
                 buttonsArray[i].innerText = (data.answers[i]);
             }
         }).catch(error => { console.error('Error at getAnswersById:', error) })
+
+        fetch('../logic/laba9/getImageById.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 'questionCounter': questionCounter })
+        }).then(response => response.json()).then(data => {
+            let image = document.getElementById("questionImage");
+            image.setAttribute('src', data.image);
+        }).catch(error => { console.error('Error at getImageById.php:', error) })
     }
 
     /*
         + 1. запрос за правильным ответом и его проврека
         --- старый функционал готов ---
-        + 2. учет заданых вопросов делай на localStorage, можно прям в counters
+        + 2. учет заданых вопросов делай на sessionStorage, можно прям в counters
         3. по окончании вопросов выводить форму с добавлением пользователя (
             1. пользователь вводит имя
             2. отправляем запись в базу с именем и score
