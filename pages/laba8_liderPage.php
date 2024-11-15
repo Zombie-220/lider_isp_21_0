@@ -34,7 +34,7 @@
     </table>
 </body>
 <script>
-    fetch('../logic/laba9/getUsersByScore.php')
+    fetch('../logic/laba8/getUsersByScore.php')
     .then(response => response.json()).then(data => {
         var table = document.getElementById("table").getElementsByTagName('tbody')[0];
         for (let i = 0; i < data.usersTable.length; i++) {
@@ -48,5 +48,5 @@
     }).catch(error => { console.error('Error at getUsersByScore.php:', error); })
 </script>
 
-<script src="../logic/laba9/logic.js"></script>
+<script src="../logic/laba8/logic.js"></script>
 </html>

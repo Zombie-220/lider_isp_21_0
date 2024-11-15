@@ -82,7 +82,7 @@
             if (countdown <= 1) { getAnswer(5); }
         }, 1000);
 
-        fetch('../logic/laba9/getQuestionById.php', {
+        fetch('../logic/laba8/getQuestionById.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'questionCounter': questionCounter })
@@ -90,7 +90,7 @@
             document.getElementById('questionWording').innerText = (JSON.stringify(data.question)).slice(1, -1);
         }).catch(error => { console.error('Error at getQuestionById:', error) })
 
-        fetch('../logic/laba9/getAnswersById.php', {
+        fetch('../logic/laba8/getAnswersById.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'questionCounter': questionCounter })
@@ -101,7 +101,7 @@
             }
         }).catch(error => { console.error('Error at getAnswersById:', error) })
 
-        fetch('../logic/laba9/getImageById.php', {
+        fetch('../logic/laba8/getImageById.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'questionCounter': questionCounter })
@@ -112,6 +112,6 @@
     }
 </script>
 
-<script src='../logic/laba9/logic.js'></script>
+<script src='../logic/laba8/logic.js'></script>
 </body>
 </html>
