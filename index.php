@@ -31,6 +31,7 @@
         <a href="./pages/laba7.php" class="main__url">Лабораторная работа №7</a>
         <a href="./pages/laba7-protection.php" class="main__url">Лабораторная работа №7 - защита</a>
         <a href="./pages/laba8.php" class="main__url">Лабораторная работа №8</a>
+        <a href="./pages/laba9.php" class="main__url">Лабораторная работа №9</a>
     </div>
 
     <?php render_footer(); ?>

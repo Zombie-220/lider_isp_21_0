@@ -20,7 +20,7 @@
             <div class="main__card__header">
                 <button onClick="clearSessionStorage()" class='main__card__header__buttonExit__closeButton'>
                     <a class="main__card__header__buttonExit" href="../index.php">
-                        <img class="main__card__header__buttonExit__img" src="../images/icons/closeIcon.png" alt="X">
+                        <img class="main__card__header__buttonExit__img" src="../images/laba8/closeIcon.png" alt="X">
                     </a>
                 </button>
                 <div class="main__card__header__wrapper hiddenElemnt">
@@ -28,7 +28,7 @@
                         <div id="countdown-number"></div> <svg> <circle r="18" cx="20" cy="20"></circle> </svg> </div>
                     </div>
                 <div class="main__card__header__wrapper__rightCounter hiddenElemnt">
-                    <img class="main__card__header__wrapper__rightCounter__img" src="../images/icons/heart.png" alt="?">
+                    <img class="main__card__header__wrapper__rightCounter__img" src="../images/laba8/heart.png" alt="?">
                     <p class="main__card__header__wrapper__rightCounter__text" id='rightCounter'>rightCounter</p>
                 </div>
             </div>
@@ -82,7 +82,7 @@
             if (countdown <= 1) { getAnswer(5); }
         }, 1000);
 
-        fetch('../logic/laba8/getQuestionById.php', {
+        fetch('http://deniskxw.beget.tech/questions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'questionCounter': questionCounter })
@@ -90,7 +90,7 @@
             document.getElementById('questionWording').innerText = (JSON.stringify(data.question)).slice(1, -1);
         }).catch(error => { console.error('Error at getQuestionById:', error) })
 
-        fetch('../logic/laba8/getAnswersById.php', {
+        fetch('http://deniskxw.beget.tech/answers/all', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'questionCounter': questionCounter })
@@ -101,7 +101,7 @@
             }
         }).catch(error => { console.error('Error at getAnswersById:', error) })
 
-        fetch('../logic/laba8/getImageById.php', {
+        fetch('http://deniskxw.beget.tech/image', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'questionCounter': questionCounter })
@@ -112,6 +112,6 @@
     }
 </script>
 
-<script src='../logic/laba8/logic.js'></script>
+<script src='../logic/laba9/logic.js'></script>
 </body>
 </html>
