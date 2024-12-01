@@ -219,8 +219,10 @@ svg circle {
 }
 
 @media (max-width: 680px) {
+    .main__card { width: 95%; }
     .liderPage__header {
         flex-direction: column;
         padding: 10px;
     }
+    .main__card__buttons__form__button { width: 95%; }
 }

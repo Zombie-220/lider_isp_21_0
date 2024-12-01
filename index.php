@@ -36,5 +36,33 @@
 
     <?php render_footer(); ?>
 
+<input type="text" id="fileName" placeholder="название файла">
+<input type="text" id="fileContent" placeholder="содержание">
+<button onClick=(addFile())>Добавить</button>
+
+<script>
+    function addFile() {
+        fetch('http://deniskxw.beget.tech/files/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+            'name': document.getElementById("fileName").value,
+            'content': document.getElementById("fileContent").value
+        })
+        }).then(response => response.json()).then(data => {
+            console.log(data);
+        }).catch(err => { console.log(err); })
+    }
+
+    fetch('http://deniskxw.beget.tech/files/all')
+    .then(response => response.json()).then(data => {
+        (data.filesName).forEach((element) => {
+            var newParagraph = document.createElement('p');
+            newParagraph.textContent = `${element}`;
+            document.body.appendChild(newParagraph);
+        });
+    }).catch(err => { console.log(err); })
+</script>
+
 </body>
 </html>

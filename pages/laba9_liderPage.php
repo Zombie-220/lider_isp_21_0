@@ -33,8 +33,9 @@
         </tbody>
     </table>
 </body>
+
 <script>
-    fetch('http://deniskxw.beget.tech/liders')
+    fetch('http://deniskxw.beget.tech/users/liders')
     .then(response => response.json()).then(data => {
         var table = document.getElementById("table").getElementsByTagName('tbody')[0];
         for (let i = 0; i < data.usersTable.length; i++) {
