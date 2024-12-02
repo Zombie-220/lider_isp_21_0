@@ -46,7 +46,7 @@
             cell1.innerHTML = `${data.usersTable[i]}`;
             cell2.innerHTML = `${data.scoreTable[i]}`;
         }
-    }).catch(error => { console.error('Error at getUsersByScore.php:', error); })
+    }).catch(error => { console.error('Error at /users/liders:', error); })
 </script>
 
 <script src="../logic/laba9/logic.js"></script>

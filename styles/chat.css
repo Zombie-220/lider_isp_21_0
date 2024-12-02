@@ -1,0 +1,177 @@
+body {
+    background-color: #141414;
+    width: 70%;
+    margin: auto;
+}
+
+.header {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 15%;
+    right: 15%;
+    background-color: #222;
+    border: 1px solid #868686;
+    padding: 6px 6px;
+}
+
+.header-linkBack {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.header-linkBack-text { color: #868686 }
+
+.header-linkBack-img {
+    width: 20px;
+    height: 20px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 15%;
+    right: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #222;
+    border: 1px solid #868686;
+    border-radius: 15px 15px 0px 0px;
+}
+
+.footer-input {
+    width: 80%;
+    height: 30px;
+    border-radius: 15px 0px 0px 0px;
+    padding-left: 10px;
+    font-size: 18px;
+    background-color: #0000;
+    color: #ddd;
+    border: none;
+}
+
+#loginForm-input, #searchUserName {
+    background-color: #0000;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 6px;
+    color: #ddd;
+    font-size: 18px;
+}
+
+.footer-input:focus, #loginForm-input:focus, #searchUserName:focus { outline: none; }
+.footer-input::placeholder, #loginForm-input::placeholder, #searchUserName::placeholder { color: #868686; }
+
+.footer-button, .header-button {
+    cursor: pointer;
+    width: 20%;
+    border: none;
+    background-color: #0000;
+    transition: 200ms;
+    border-radius: 0px 10px 0px 0px;
+}
+.footer-button:hover, .header-button:hover { background-color: #86868655; }
+
+.header-button {
+    border-radius: 50%;
+    width: auto;
+    height: auto;
+}
+
+.footer-button-img, .header-button-img {
+    width: 25px;
+    height: 25px;
+}
+
+.main {
+    background-color: #252525;
+    padding: 40px 100px;
+}
+
+.messageWrapper {
+    justify-content: space-between;
+    min-width: 10px;
+    border-radius: 10px;
+    border: 1px solid #606060;
+    padding: 4px;
+    margin: 10px 0px;
+}
+
+.messageWrapper__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.messageWrapper__header-textAuthor {
+    color: #aaa;
+    font-size: 18px;
+}
+
+.messageWrapper__header-textTime {
+    color: #868686;
+    font-size: 14px;
+}
+
+.messageWrapper__body {
+    margin-top: 8px;
+    color: #ddd;
+    font-size: 18px;
+}
+
+#loginForm {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.loginForm-button {
+    cursor: pointer;
+    margin-top: 8px;
+    background-color: #0000;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 6px;
+    color: #ddd;
+    font-size: 18px;
+    transition: 200ms;
+}
+.loginForm-button:hover { background-color: #86868666; }
+
+#loginForm-error {
+    color: #d00;
+    margin: 8px 0px;
+    font-size: 18px;
+}
+
+.header-searchUser {
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 650px) {
+    body {
+        width: 100%;
+        margin: 0px;
+    }
+    .main {
+        width: 100%;
+        padding: 55px 0px;
+    }
+    .messageWrapper {
+        width: 95%;
+        margin: 0px 5px;
+    }
+    .header, .footer {
+        left: 0;
+        right: 0;
+        border-radius: 0px;
+    }
+}

@@ -224,5 +224,5 @@ svg circle {
         flex-direction: column;
         padding: 10px;
     }
-    .main__card__buttons__form__button { width: 95%; }
+    .main__card__buttons__hiddenDiv__input, .main__card__buttons__hiddenDiv__button, .main__card__buttons__form__button { width: 95%; }
 }
